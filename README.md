@@ -1,157 +1,128 @@
-# CodeShield AI 🛡️
+# SafeCode AI 🔐
 
-[![CI Pipeline](https://github.com/mohd-musheer/CodeShield-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/mohd-musheer/CodeShield-AI/actions/workflows/ci.yml)
-[![Security Scan](https://github.com/mohd-musheer/CodeShield-AI/actions/workflows/security.yml/badge.svg)](https://github.com/mohd-musheer/CodeShield-AI/actions/workflows/security.yml)
-[![Apache 2.0 License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Docker Support](https://img.shields.io/badge/Docker-Supported-blue.svg?logo=docker)](Dockerfile)
+**AI-Powered Repository Security Analyzer**
 
-CodeShield AI is a state-of-the-art, enterprise-quality codebase security analyzer. It automates remote repository cloning, dependency mapping, code structural analysis, and leverages Groq's Large Language Models (LLMs) alongside static scanners to detect, score, and automatically remediate vulnerabilities.
+SafeCode AI is a repository security analysis tool that combines static security scanning with Groq-powered AI analysis to help identify potential vulnerabilities in source code.
 
----
+## 🚀 Features
 
+- **Multi-source scanning:** Analyze public GitHub/GitLab repositories, local directories, and ZIP uploads.
+- **AI-powered analysis:** Uses Groq LLM to identify potential security vulnerabilities.
+- **Code chunking:** Processes source code in manageable chunks for AI analysis.
+- **Security findings:** Displays vulnerability descriptions, severity, confidence, and suggested fixes.
+- **Code comparison:** View vulnerable and remediated code side by side.
+- **Patch generation:** Generate suggested code patches for identified vulnerabilities.
+- **Security reports:** Export reports in supported formats such as JSON, CSV, Markdown, HTML, and SARIF.
+- **Web dashboard:** Interact with the scanner through a browser-based interface.
 
-## 🛠️ Architecture
+## 🛠️ Technologies Used
 
-```text
-               ┌───────────────────────────────────────────────┐
-               │              Web Dashboard / CLI              │
-               └──────────────────────┬────────────────────────┘
-                                      │
-                                      ▼
-               ┌───────────────────────────────────────────────┐
-               │           FastAPI Web API Endpoints           │
-               └──────────────────────┬────────────────────────┘
-                                      │
-                                      ▼
-               ┌───────────────────────────────────────────────┐
-               │      ScanStateManager (Disk Persistence)      │
-               └──────────────────────┬────────────────────────┘
-                                      │
-                                      ▼
-               ┌───────────────────────────────────────────────┐
-               │     PipelineManager (Background Worker)       │
-               └─┬──────────────────┬──────────────────────┬───┘
-                 │                  │                      │
-                 ▼                  ▼                      ▼
-        ┌────────────────┐ ┌────────────────┐ ┌────────────────┐
-        │  GitHub/GitLab │ │ Code Chunker & │ │ Static Regex & │
-        │ Cloner Service │ │ Compatible     │ │ LLM Semantic   │
-        │                │ │ Merger (Groq)  │ │ Scanner        │
-        └────────────────┘ └────────────────┘ └────────────────┘
-```
+| Technology | Purpose |
+|---|---|
+| Python | Backend development |
+| FastAPI | REST API |
+| Groq API | AI-powered code analysis |
+| JavaScript | Frontend functionality |
+| HTML & CSS | User interface |
+| Docker | Containerized deployment |
 
----
+## 🏗️ Project Architecture
 
-## 🚀 Key Features
+1. **Frontend:** Provides the interface for submitting repositories and viewing scan results.
+2. **FastAPI backend:** Handles API requests and coordinates scanning.
+3. **Repository processing:** Loads and prepares source code for analysis.
+4. **Security scanners:** Performs static security checks.
+5. **Groq AI scanner:** Analyzes code chunks for potential vulnerabilities.
+6. **Report generation:** Presents findings and suggested remediation.
 
-- **Multi-Source Code Loading**: Scan remote public GitHub/GitLab repositories, local directories, or ZIP archive uploads with drag-and-drop.
-- **Smart Chunk Grouping**: Groups compatible code segments by file into unified prompts (up to 15,000 characters) to optimize Groq LLM context windows, bypass HTTP 429 rate limits, and run scans in under 10 seconds.
-- **Disk-Backed State Machine**: Remembers scan progress across server restarts and connection interruptions.
-- **Interactive Code Modals**: Provides full code highlighting alongside side-by-side vulnerable vs. remediated code views.
-- **Unified Diff Patches**: Generates drop-in `.diff` patches and pre-formated AI prompt logs (`fix_prompt.json`, `.md`, `.txt`) to fix codebase security flaws.
-- **Multi-Format Reports**: Downloader supports SARIF, CSV, JSON, Markdown, HTML, and Mock PDF formats.
+## ⚙️ Installation and Setup
 
----
+### 1. Clone the repository
 
-## 🐳 Docker Deployment
-
-### 1. Build and Run via Docker Compose (Recommended)
-Launch the full container stack (including mounted volumes for logs and reports):
 ```bash
-# Provide your GROQ API Key in the shell environment or in .env
-export GROQ_API_KEY=""
-
-# Build and start services
-docker-compose up --build -d
+git clone https://github.com/umme-haney19/SafeCode-AI.git
+cd SafeCode-AI
 ```
-Access the application at `http://localhost:8000`.
 
-### 2. Manual Docker Build
-Build and run the container locally in detached mode (`-d`), specifying your `GROQ_API_KEY` and `GROQ_MODEL` configuration:
+### 2. Create a virtual environment
+
 ```bash
-# Build the Docker image
-docker build -t codeshield-ai .
-
-# Run the container in detached mode
-docker run -d -p 8000:8000 -e GROQ_API_KEY="" -e GROQ_MODEL="llama-3.3-70b-versatile" codeshield-ai
+python -m venv venv
 ```
 
-### 3. Pull Published Release Image
-CodeShield AI automatically publishes container builds to GitHub Container Registry (GHCR) on tagged releases. Pull and run the official image:
+Activate it on Windows:
+
+```powershell
+.\venv\Scripts\Activate.ps1
+```
+
+### 3. Install dependencies
+
 ```bash
-# Pull the latest image
-docker pull ghcr.io/mohd-musheer/codeshield-ai:latest
-
-# Run the container in detached mode
-docker run -d -p 8000:8000 -e GROQ_API_KEY="" -e GROQ_MODEL="llama-3.3-70b-versatile" ghcr.io/mohd-musheer/codeshield-ai:latest
+pip install -r requirements.txt
 ```
 
+### 4. Configure the API key
+
+Copy `.env.example` to `.env`:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Add your Groq API key to `.env`:
+
+```env
+GROQ_API_KEY=your_groq_api_key
+```
+
+Never upload your actual `.env` file or API key to GitHub.
+
+### 5. Run the application
+
+On Windows PowerShell:
+
+```powershell
+.\start.ps1
+```
+
+Open the application in your browser:
+
+http://127.0.0.1:8000
+
+## 📡 API Endpoints
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | `/repository/analyze` | Start a repository security scan |
+| POST | `/repository/upload` | Upload a ZIP repository |
+| POST | `/repository/cancel/{scan_id}` | Cancel a scan |
+| GET | `/scan/status/{scan_id}` | Check scan progress |
+| GET | `/repository/report` | Download a scan report |
+| GET | `/health` | Check API health |
+
+*Check the running application's API documentation for the exact request parameters and response formats.*
+
+## 🔮 Future Improvements
+
+- Improve vulnerability detection accuracy.
+- Add more security scanning rules.
+- Enhance the dashboard and visualization.
+- Add automated security testing.
+- Improve scan performance for large repositories.
+
+## 📄 License and Attribution
+
+This project is a customized and extended version of [CodeShield-AI](https://github.com/mohd-musheer/CodeShield-AI).
+
+The original project is distributed under the Apache License 2.0. Original license and attribution notices are retained. See the `LICENSE` file for details.
+
+## 👩‍💻 Developer
+
+**Umme Haney Sallauddin**
+
+GitHub: [umme-haney19](https://github.com/umme-haney19)
 
 ---
 
-## 💻 Local Installation (Development)
-
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/mohd-musheer/CodeShield-AI.git
-   cd CodeShield-AI
-   ```
-
-2. **Configure Environment Settings**:
-   Copy `.env.example` to `.env`:
-   ```bash
-   cp .env.example .env
-   ```
-   Edit `.env` and paste your `GROQ_API_KEY`.
-
-3. **Start the Production Service**:
-   Run the quick-start script:
-   - **Linux / macOS**:
-     ```bash
-     chmod +x start.sh
-     ./start.sh
-     ```
-   - **Windows (PowerShell)**:
-     ```powershell
-     .\start.ps1
-     ```
-
----
-
-## 📘 API Documentation
-
-CodeShield AI exposes REST endpoints for integration:
-
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `POST` | `/repository/analyze` | Triggers background codebase security scans. |
-| `POST` | `/repository/upload` | Uploads a ZIP codebase archive for parsing. |
-| `POST` | `/repository/cancel/{scan_id}` | Aborts a running scan and cleans up disk cache. |
-| `GET` | `/scan/status/{scan_id}` | Retrieves active progress metrics and current stage. |
-| `GET` | `/repository/report` | Downloads report in `json`, `html`, `markdown`, `sarif`, `csv`, `pdf`, `patch_diff`, or `fix_prompt`. |
-| `GET` | `/health` | Server status and API liveness metrics. |
-
----
-
-## ⚡ Performance Benchmarks
-
-| Project Size | Total Chunks | Merged Groq Calls | Total Scan Duration |
-| :--- | :--- | :--- | :--- |
-| Small (1-50 Files) | 3-10 | 1 | 2-4 seconds |
-| Medium (50-200 Files) | 30-80 | 3-5 | 6-9 seconds |
-| Large (200+ Files) | 200+ | 12-15 | 15-20 seconds |
-
----
-
-## 🗺️ Roadmap
-
-- [ ] Support private repositories via SSH Keys and Git Credential Helper.
-- [ ] Add native Semgrep rules integration alongside Groq semantic scans.
-- [ ] Implement multi-tenant users management and workspace segregation.
-- [ ] Provide slack and webhook notification alerts on completed scans.
-
----
-
-## 📜 License
-
-Distributed under the Apache 2.0 License. See [LICENSE](LICENSE) for details.
+*SafeCode AI — Making repository security analysis easier with AI.*
