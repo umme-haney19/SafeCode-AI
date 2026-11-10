@@ -1,0 +1,48 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# IDE settings
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# CodeShield AI specific exclusions
+.env
+reports/
+repositories/
+uploaded_zip/
+tmp/
+cache/
+runtime/
+workspace/
+*test-scan-12345*
+.env.*
+*.pyc
+venv_old/
+full_output.txt
+test_output.txt
+test_err.txt
+test_err_full.txt
+test_err_output.txt
+test_full_output.txt
+*_output.txt
+test_*.txt
+# Local test outputs
+*_output.txt
+test_*.txt
+full_test_*.txt
+
+# Old virtual environment
+venv_old/
