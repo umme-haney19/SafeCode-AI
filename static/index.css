@@ -1531,3 +1531,64 @@ body.theme-light .finding-item h4 {
 .theme-btn {
     display: none !important;
 }
+
+
+
+/* =========================================
+   SAFECODE AI - PREMIUM DASHBOARD DESIGN
+   ========================================= */
+
+body.theme-dark {
+    background: #080f1e;
+    color: #e5edf8;
+}
+
+body.theme-dark .app-container {
+    background: transparent;
+}
+
+body.theme-dark .dashboard-grid {
+    gap: 24px;
+    grid-template-columns: 340px minmax(0, 1fr);
+}
+
+body.theme-dark .score-card,
+body.theme-dark .stats-card,
+body.theme-dark .category-scores-card,
+body.theme-dark .finding-item {
+    background: linear-gradient(145deg, #111d32, #0d1729);
+    border: 1px solid rgba(100, 160, 255, 0.16);
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+}
+
+body.theme-dark .score-card,
+body.theme-dark .stats-card,
+body.theme-dark .category-scores-card {
+    padding: 24px;
+}
+
+body.theme-dark .finding-item {
+    padding: 20px;
+    margin-bottom: 16px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+body.theme-dark .finding-item:hover {
+    transform: translateY(-3px);
+    border-color: rgba(56, 189, 248, 0.55);
+}
+
+body.theme-dark button {
+    transition: all 0.2s ease;
+}
+
+body.theme-dark button:hover {
+    filter: brightness(1.12);
+}
+
+@media (max-width: 900px) {
+    body.theme-dark .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,7 +1,7 @@
 {
-  "name": "SafeCode AI - Repository Security Guard AI",
-  "short_name": "SafeCode AI - Repository Security Guard",
-  "description": "AI-Powered Code Repository Security Analyzer",
+  "name": "SafeCode AI",
+"short_name": "SafeCode AI",
+"description": "AI-Powered Repository Security Analyzer",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#030712",

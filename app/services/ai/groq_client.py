@@ -71,7 +71,7 @@ class GroqAIScanner:
             "      \"attack_scenario\": \"Step-by-step exploit scenario indicating how it can be attacked\",\n"
             "      \"business_impact\": \"Direct operational or safety impact to the business system\",\n"
             "      \"references\": [\"List of relevant external URLs or documentation references\"],\n"
-            "      \"patch\": \"Unified git diff format patch content starting with --- and +++ representing the file modification\"\n"
+            "      \"patch\": \"A valid unified git diff patch for this exact file. Include --- a/<file_path>, +++ b/<file_path>, and correct @@ hunk headers. Include the original lines and replacement lines. The patch must be applicable to the provided source code. Do not return a description or remediation instructions in this field. If a safe, valid patch cannot be generated, return an empty string.\"\n"
             "    }\n"
             "  ]\n"
             "}"
@@ -85,7 +85,27 @@ class GroqAIScanner:
             f"Code Content:\n"
             f"```\n"
             f"{chunk.content}\n"
-            f"```"
+            f"```\n\n"
+"Generate a complete, valid unified Git diff patch for each finding when a safe fix is possible.\n"
+"Use the exact file path and original source code provided above.\n"
+"MANDATORY: Every non-empty patch MUST contain all of these parts in this order:\n"
+"1. --- a/<file_path>\n"
+"2. +++ b/<file_path>\n"
+"3. At least one valid @@ hunk header, such as @@ -10,3 +10,3 @@\n"
+"4. Original context lines beginning with a space, removed lines beginning with -, and replacement lines beginning with +.\n"
+"Example format:\n"
+"--- a/example.py\n"
+"+++ b/example.py\n"
+"@@ -10,3 +10,3 @@\n"
+" context line\n"
+"-old_code()\n"
+"+new_code()\n"
+"Do not omit the @@ hunk header under any circumstances when returning a non-empty patch.\n"
+"Use actual source lines and correct line numbers. Do not invent code or context.\n"
+"Keep the patch minimal and focused on the identified vulnerability.\n"
+"Do not include explanations, Markdown fences, or extra text inside the patch field.\n"
+"If a safe, complete, applicable patch cannot be generated, return an empty string.\n"
+
         )
 
         headers = {
@@ -108,7 +128,7 @@ class GroqAIScanner:
         for attempt in range(1, max_attempts + 1):
             try:
                 response = requests.post(self.api_url, headers=headers, json=payload, timeout=20)
-                
+
                 if response.status_code == 429:
                     if attempt < max_attempts:
                         # Wait for a short backoff (2 seconds) and retry once
@@ -125,7 +145,7 @@ class GroqAIScanner:
                 llm_text = res_data["choices"][0]["message"]["content"].strip()
                 parsed = json.loads(llm_text)
                 raw_findings = parsed.get("findings", [])
-                
+
                 findings = []
                 for item in raw_findings:
                     rel_line = item.get("line_number")
@@ -139,9 +159,9 @@ class GroqAIScanner:
                                 abs_line = rel_val
                         except ValueError:
                             pass
-                    
+
                     finding_id = f"ai-{item.get('category')}-{chunk.file_path}-{abs_line}"
-                    
+
                     findings.append(
                         Finding(
                             finding_id=finding_id,

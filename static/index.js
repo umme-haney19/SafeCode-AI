@@ -179,14 +179,21 @@ applyTheme("dark");
             }
         });
 
-        copyPatchBtn.addEventListener("click", () => {
-            if (activeViewingFinding && activeViewingFinding.patch) {
-                navigator.clipboard.writeText(activeViewingFinding.patch);
-                alert("Patch diff copied to clipboard!");
-            } else {
-                alert("No patch diff generated for this finding.");
-            }
-        });
+        copyPatchBtn.addEventListener("click", async () => {
+    const patch = activeViewingFinding?.patch;
+
+    if (!patch || !patch.trim()) {
+        alert("No valid patch diff is available for this finding.");
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(patch);
+        alert("Patch diff copied to clipboard!");
+    } catch (error) {
+        alert("Could not copy the patch. Please try again.");
+    }
+});
 
         downloadPatchBtn.addEventListener("click", () => {
             if (currentScanId && activeViewingFinding) {
@@ -866,11 +873,22 @@ applyTheme("dark");
 
                 const copyPatchBtn = item.querySelector(".copy-patch-trigger-btn");
                 if (copyPatchBtn) {
-                    copyPatchBtn.addEventListener("click", () => {
-                        navigator.clipboard.writeText(f.patch);
-                        alert("Unified diff patch copied to clipboard!");
-                    });
-                }
+                    copyPatchBtn.addEventListener("click", async () => {
+        if (!f.patch || !f.patch.trim()) {
+            alert("No valid patch diff is available for this finding.");
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(f.patch);
+            alert("Unified diff patch copied to clipboard!");
+        } catch (error) {
+            alert("Could not copy the patch. Please try again.");
+        }
+    });
+}
+                   
+    
             }
 
             findingsContainer.appendChild(item);
@@ -913,15 +931,11 @@ applyTheme("dark");
             // Render line numbered items
             renderLineNumberedCode(codeBeforeContent, sourceCode, finding.line_number);
 
-            // Remediated code render (from fix_suggestion / suggested code or patch diff application mockup)
-            let remediatedCode = "";
-            if (finding.patch) {
-                // Apply mock patch overlay or just display the suggested code segment
-                remediatedCode = `${finding.fix_suggestion}\n\n# --- Patch Diff Guidelines ---\n${finding.patch}`;
-            } else {
-                remediatedCode = finding.fix_suggestion;
-            }
-            renderLineNumberedCode(codeAfterContent, remediatedCode, null);
+            // Display remediation guidance without pretending it is applied source code
+const suggestedFix = finding.fix_suggestion?.trim()
+    || "No remediation suggestion is available for this finding.";
+
+renderLineNumberedCode(codeAfterContent, suggestedFix, null);
 
         } catch (e) {
             codeBeforeContent.textContent = `Source preview unavailable.\n\nReason: ${e.message}\n\nOriginal Snippet:\n${finding.code_snippet || "N/A"}`;

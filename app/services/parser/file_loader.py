@@ -76,7 +76,7 @@ class FileLoader:
                 RepositoryFile(
                     name=file.name,
                     extension=file.suffix.lower(),
-                    relative_path=str(file.relative_to(repository)),
+                    relative_path=str(file.relative_to(repository)).replace("\\", "/"),
                     absolute_path=str(file.resolve()),
                     size=stat_info.st_size,
                     modified_time=datetime.fromtimestamp(stat_info.st_mtime),
