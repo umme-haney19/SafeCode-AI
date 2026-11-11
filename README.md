@@ -90,6 +90,10 @@ Open the application in your browser:
 
 http://127.0.0.1:8000
 
+## 🖥️ Dashboard Preview
+
+![SafeCode AI Dashboard](screenshots/dashboard.png)
+
 ## 📡 API Endpoints
 
 | Method | Endpoint | Purpose |
@@ -113,9 +117,19 @@ http://127.0.0.1:8000
 
 ## 📄 License and Attribution
 
-This project is a customized and extended version of [CodeShield-AI](https://github.com/mohd-musheer/CodeShield-AI).
+## 📄 License and Attribution
 
-The original project is distributed under the Apache License 2.0. Original license and attribution notices are retained. See the `LICENSE` file for details.
+SafeCode AI is an independently customized repository security analysis tool developed by **Umme Haney Sallauddin**.
+
+The project includes custom UI design, branding improvements, and security-scanning enhancements.
+
+This project is distributed under the **Apache License 2.0**. See the [LICENSE](LICENSE) file for complete license terms.
+
+## 👩‍💻 Developer
+
+**Umme Haney Sallauddin**
+
+GitHub: [umme-haney19](https://github.com/umme-haney19)
 
 ## 👩‍💻 Developer
 
