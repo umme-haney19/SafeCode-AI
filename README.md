@@ -117,8 +117,6 @@ http://127.0.0.1:8000
 
 ## 📄 License and Attribution
 
-## 📄 License and Attribution
-
 SafeCode AI is an independently customized repository security analysis tool developed by **Umme Haney Sallauddin**.
 
 The project includes custom UI design, branding improvements, and security-scanning enhancements.
@@ -130,13 +128,5 @@ This project is distributed under the **Apache License 2.0**. See the [LICENSE](
 **Umme Haney Sallauddin**
 
 GitHub: [umme-haney19](https://github.com/umme-haney19)
-
-## 👩‍💻 Developer
-
-**Umme Haney Sallauddin**
-
-GitHub: [umme-haney19](https://github.com/umme-haney19)
-
----
 
 *SafeCode AI — Making repository security analysis easier with AI.*
