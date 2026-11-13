@@ -1592,3 +1592,8 @@ body.theme-dark button:hover {
         grid-template-columns: 1fr;
     }
 }
+
+/* Always hide elements marked as hidden */
+[hidden] {
+    display: none !important;
+}

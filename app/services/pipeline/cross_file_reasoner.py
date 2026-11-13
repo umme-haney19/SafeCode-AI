@@ -45,6 +45,9 @@ class CrossFileReasoner:
                     None
                 )
                 if existing:
+                    # Preserve an AI-generated patch when merging duplicates
+                    if not existing.patch and f.patch:
+                        existing.patch = f.patch
                     # Update explanation if the new one is longer/more detailed
                     if len(f.explanation) > len(existing.explanation):
                         existing.explanation = f.explanation

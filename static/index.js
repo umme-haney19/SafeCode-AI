@@ -898,6 +898,42 @@ applyTheme("dark");
     // Interactive Code Viewer Modal open & lines highlighting
     async function openCodeViewerModal(finding) {
         activeViewingFinding = finding;
+    
+// Show patch buttons only when a valid unified Git diff exists
+const patchText = typeof finding.patch === "string"
+    ? finding.patch.trim()
+    : "";
+
+const patchLines = patchText.split(/\r?\n/);
+
+const hasFileHeaders =
+    patchLines[0]?.startsWith("--- a/") &&
+    patchLines[1]?.startsWith("+++ b/");
+
+const hunkIndex = patchLines.findIndex(line =>
+    /^@@ -\d+(?:,\d+)? \+\d+(?:,\d+)? @@/.test(line)
+);
+
+const hasChangedLines = hunkIndex >= 0 &&
+    patchLines.slice(hunkIndex + 1).some(line =>
+        (/^[+-]/.test(line) &&
+         !line.startsWith("+++") &&
+         !line.startsWith("---"))
+    );
+
+const hasPatch = hasFileHeaders && hunkIndex >= 2 && hasChangedLines;
+
+const copyPatchButton = document.getElementById("copyPatchBtn");
+const downloadPatchButton = document.getElementById("downloadPatchBtn");
+
+if (copyPatchButton) {
+    copyPatchButton.hidden = !hasPatch;
+}
+
+if (downloadPatchButton) {
+    downloadPatchButton.hidden = !hasPatch;
+}
+
         
         codeModalTitle.textContent = finding.title;
         codeModalSeverity.textContent = finding.severity;

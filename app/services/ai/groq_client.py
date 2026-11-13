@@ -135,7 +135,9 @@ class GroqAIScanner:
                         time.sleep(min(2 ** attempt, 20))
                         continue
                     else:
-                        raise GroqRateLimitException("Groq API rate limit exceeded after retrying.")
+                        raise GroqRateLimitException(
+    f"Groq API rate limit exceeded after retrying. Details: {response.text[:500]}"
+)
 
                 if response.status_code != 200:
                     logger.error(f"Groq API returned error {response.status_code}: {response.text}")
