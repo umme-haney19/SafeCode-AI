@@ -20,7 +20,7 @@ env/
 
 # CodeShield AI specific exclusions
 .env
-reports/
+/reports/
 repositories/
 uploaded_zip/
 tmp/
